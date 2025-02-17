@@ -51,7 +51,18 @@ kotlin {
         }
         binaries.executable()
     }
-    
+
+    kotlin {
+        js(IR) {
+            browser {
+                webpackTask {
+                    outputFileName = "index.html"
+                }
+            }
+        }
+    }
+
+
     sourceSets {
         val desktopMain by getting
         
