@@ -1,14 +1,12 @@
-# Usa uma imagem do Nginx como base
+# Usa o Gradle com OpenJDK para compilar o Kotlin/JS
+FROM gradle:jdk17 AS build
+WORKDIR /app
+COPY . .
+RUN ./gradlew jsBrowserProductionWebpack
+
+# Usa o Nginx para servir os arquivos Web gerados
 FROM nginx:alpine
-
-# Define o diretório de trabalho
 WORKDIR /usr/share/nginx/html
-
-# Copia os arquivos do build para o diretório de publicação
-COPY build/dist /usr/share/nginx/html
-
-# Expõe a porta 80
+COPY --from=build /app/build/distributions/ .
 EXPOSE 80
-
-# Comando de entrada
 CMD ["nginx", "-g", "daemon off;"]

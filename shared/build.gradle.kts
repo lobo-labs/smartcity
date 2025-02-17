@@ -38,7 +38,24 @@ kotlin {
             }
         }
     }
-    
+
+    js(IR) {
+        browser {
+//            webpackTask {
+//                // Configuração opcional: otimiza o Webpack
+//                cssSupport.enabled = true
+//            }
+            runTask {
+                // Executa o Webpack Dev Server no modo de desenvolvimento
+                devServer = devServer.copy(
+                    open = true,
+                    port = 8080
+                )
+            }
+        }
+    }
+
+
     sourceSets {
         commonMain.dependencies {
             // put your Multiplatform dependencies here
