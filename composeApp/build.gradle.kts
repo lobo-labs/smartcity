@@ -31,7 +31,15 @@ kotlin {
     }
     
     jvm("desktop")
-    
+
+    js(IR) {
+        browser {
+            webpackTask {
+                outputFileName = "bundle.js"
+            }
+        }
+    }
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         moduleName = "composeApp"
@@ -117,5 +125,12 @@ compose.desktop {
             packageName = "br.com.lobolabs.smartcity"
             packageVersion = "1.0.0"
         }
+    }
+}
+
+tasks {
+    val buildWeb by creating {
+        group = "build"
+        dependsOn("browserProductionWebpack")
     }
 }
