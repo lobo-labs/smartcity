@@ -15,13 +15,13 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     iosX64()
     iosArm64()
     iosSimulatorArm64()
-    
+
     jvm()
-    
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         browser {
@@ -38,23 +38,6 @@ kotlin {
             }
         }
     }
-
-    js(IR) {
-        browser {
-//            webpackTask {
-//                // Configuração opcional: otimiza o Webpack
-//                cssSupport.enabled = true
-//            }
-            runTask {
-                // Executa o Webpack Dev Server no modo de desenvolvimento
-                devServer = devServer.copy(
-                    open = true,
-                    port = 8080
-                )
-            }
-        }
-    }
-
 
     sourceSets {
         commonMain.dependencies {
