@@ -7,7 +7,7 @@ plugins {
 group = "br.com.lobolabs.smartcity"
 version = "1.0.0"
 application {
-    mainClass.set("br.com.lobolabs.smartcity.ApplicationKt")
+    mainClass.set("io.ktor.server.netty.EngineMain")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=${extra["io.ktor.development"] ?: "false"}")
 }
 
