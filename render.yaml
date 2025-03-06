@@ -1,0 +1,10 @@
+services:
+  - name: ebalance-webapp
+    type: web
+    env: docker
+    plan: free
+    buildCommand: "./gradlew wasmJsBrowserDistribution && ./gradlew installDist"
+    startCommand: "./build/install/app/bin/app"
+    envVars:
+      - key: PORT
+        value: 8080
