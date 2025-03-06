@@ -20,18 +20,18 @@ dependencies {
     testImplementation(libs.kotlin.test.junit)
 }
 
-//tasks.create("stage") {
-//    dependsOn("installDist")
-//}
-
-tasks {
-    register<Jar>("fatJar") {
-        archiveBaseName.set("kmp-server")
-        manifest {
-            attributes["Main-Class"] = "br.com.lobolabs.smartcity.ApplicationKt"
-        }
-        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-        from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
-        from(sourceSets.main.get().output)
-    }
+tasks.create("stage") {
+    dependsOn("installDist")
 }
+
+//tasks {
+//    register<Jar>("fatJar") {
+//        archiveBaseName.set("kmp-server")
+//        manifest {
+//            attributes["Main-Class"] = "br.com.lobolabs.smartcity.ApplicationKt"
+//        }
+//        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+//        from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+//        from(sourceSets.main.get().output)
+//    }
+//}
