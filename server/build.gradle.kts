@@ -11,10 +11,6 @@ application {
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=${extra["io.ktor.development"] ?: "false"}")
 }
 
-tasks.create("stage") {
-    dependsOn("installDist")
-}
-
 dependencies {
     implementation(projects.shared)
     implementation(libs.logback)
@@ -22,4 +18,20 @@ dependencies {
     implementation(libs.ktor.server.netty)
     testImplementation(libs.ktor.server.tests)
     testImplementation(libs.kotlin.test.junit)
+}
+
+//tasks.create("stage") {
+//    dependsOn("installDist")
+//}
+
+tasks {
+    register<Jar>("fatJar") {
+        archiveBaseName.set("kmp-server")
+        manifest {
+            attributes["Main-Class"] = "br.com.lobolabs.smartcity.ApplicationKt"
+        }
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+        from(sourceSets.main.get().output)
+    }
 }
