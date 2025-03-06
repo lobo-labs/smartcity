@@ -7,6 +7,6 @@ RUN gradle wasmJsBrowserDistribution --no-daemon
 FROM openjdk:11
 EXPOSE 8080:8080
 RUN mkdir /app
-COPY --from=build /home/gradle/server/build/libs/*.jar /app/kmp-server.jar
-COPY --from=build /home/gradle/composeApp/build/dist/wasmJs/productionExecutable /app/wasm
+COPY --from=build /home/gradle/src/server/build/libs/*.jar /app/kmp-server.jar
+COPY --from=build /home/gradle/src/composeApp/build/dist/wasmJs/productionExecutable /app/wasm
 ENTRYPOINT ["java","-jar","/app/kmp-server.jar"]
