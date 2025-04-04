@@ -39,7 +39,7 @@ RUN gradle :server:shadowJar --no-daemon
 
 # --- Estágio de Execução ---
 # Use uma imagem base JRE menor para execução
-FROM openjdk:17-jre-slim
+FROM openjdk:17-jre 
 
 WORKDIR /app
 
