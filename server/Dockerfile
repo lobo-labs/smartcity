@@ -1,24 +1,21 @@
-# Stage 1: Cache Gradle dependencies
-FROM gradle:latest AS cache
-RUN mkdir -p /home/gradle/cache_home
-ENV GRADLE_USER_HOME=/home/gradle/cache_home
-COPY build.gradle.* gradle.properties /home/gradle/app/
-COPY gradle /home/gradle/app/gradle
-WORKDIR /home/gradle/app
-RUN gradle clean build -i --stacktrace
+FROM openjdk:17-jdk-slim as build
 
-# Stage 2: Build Application
-FROM gradle:latest AS build
-COPY --from=cache /home/gradle/cache_home /home/gradle/.gradle
-COPY --chown=gradle:gradle . /home/gradle/src
-WORKDIR /home/gradle/src
-# Build the fat JAR, Gradle also supports shadow
-# and boot JAR by default.
-RUN gradle :server:buildFatJar --no-daemon
+WORKDIR /build
 
-# Stage 3: Create the Runtime Image
-FROM amazoncorretto:22 AS runtime
+# Copie todo o código fonte
+COPY . .
+
+# Execute o build (ajuste o comando conforme seu projeto)
+RUN ./gradlew :server:build
+
+# Segunda etapa para a imagem final
+FROM openjdk:17-jdk-slim
+
+WORKDIR /app
+
+# Copie apenas o JAR construído na etapa anterior
+COPY --from=build /build/server/build/libs/*.jar /app/server.jar
+
 EXPOSE 8080
-RUN mkdir /app
-COPY --from=build /home/gradle/src/server/build/libs/*.jar /app/smartcity.jar
-ENTRYPOINT ["java","-jar","/app/smartcity.jar"]
+
+CMD ["java", "-jar", "/app/server.jar"]
